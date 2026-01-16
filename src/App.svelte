@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { fetchList } from "./helpers/api";
   import { Tween } from "svelte/motion";
   import { expoOut } from "svelte/easing";
-  import Wheel from "./lib/wheel/Wheel.svelte";
 
-  let rotation = new Tween(0, {
-    duration: 3000,
-    easing: expoOut,
-  });
+  import Wheel from "./lib/wheel/Wheel.svelte";
+  import ListSection from "./lib/wheel/ListSelect/ListSection.svelte";
+
+  let rotation = new Tween(0, { duration: 3000, easing: expoOut });
 
   function spinWheel() {
     console.log("Wheel clicked!");
@@ -14,9 +14,12 @@
   }
 </script>
 
-<button
-  onclick={spinWheel}
-  class="rounded-full p-0 bg-none cursor-pointer w-[600px] h-[600px] flex items-center justify-center"
->
-  <Wheel rotation={rotation.current} />
-</button>
+<div class="flex flex-row items-start">
+  <button
+    on:click={spinWheel}
+    class="w-[600px] h-[600px] flex-none rounded-full p-0 bg-none cursor-pointer flex items-center justify-center"
+  >
+    <Wheel rotation={rotation.current} />
+  </button>
+  <ListSection />
+</div>
