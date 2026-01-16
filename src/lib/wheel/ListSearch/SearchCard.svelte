@@ -1,7 +1,10 @@
 <script lang="ts">
     import type { List } from "../../../helpers/api";
     import { fetchList } from "../../../helpers/api";
-    import { currentList } from "../../../helpers/statusStore";
+    import {
+        currentList,
+        startedFetchingLevels,
+    } from "../../../helpers/statusStore";
 
     export let list: List;
 
@@ -13,6 +16,7 @@
                 return;
             }
             currentList.set(l);
+            startedFetchingLevels.set(true);
             return;
         } else {
             console.log("no thing in the there 2");

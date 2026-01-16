@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ListCard from "./ListCard.svelte";
+    import ListCard from "./SearchCard.svelte";
     import { currentSearch } from "../../../helpers/statusStore";
     import { fetchLists } from "../../../helpers/api";
     import LeftArrow from "../../Svgs/LeftArrow.svelte";

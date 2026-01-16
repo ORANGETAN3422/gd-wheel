@@ -48,8 +48,53 @@ export interface List {
     pages: null;
 }
 
+export interface Level {
+    name: string;
+    id: string;
+    description: string;
+    author: string;
+    playerID: string;
+    accountID: string;
+    difficulty: string;
+    downloads: number;
+    likes: number;
+    disliked: boolean;
+    length: string;
+    platformer: boolean;
+    stars: number;
+    orbs: number;
+    diamonds: number;
+    featured: boolean;
+    epic: boolean;
+    epicValue: number;
+    legendary: boolean;
+    mythic: boolean;
+    gameVersion: string;
+    editorTime: number;
+    totalEditorTime: number;
+    version: number;
+    copiedID: string;
+    twoPlayer: boolean;
+    officialSong: number;
+    customSong: string;
+    coins: number;
+    verifiedCoins: boolean;
+    starsRequested: number;
+    ldm: boolean;
+    objects: number;
+    large: boolean;
+    cp: number;
+    partialDiff: string;
+    difficultyFace: string;
+    songName: string;
+    songAuthor: string;
+    songSize: string;
+    songID: string;
+    songLink: string;
+}
+
 const listEndpoint = "https://gd-wheel.vercel.app/api/list/"
-let levelsEndpoint = "https://aredl-roulette.vercel.app/api/gdbrowser/";
+let levelsEndpoint = "https://gd-wheel.vercel.app/api/level/";
 
 export async function fetchLevel(id: number) {
     try {

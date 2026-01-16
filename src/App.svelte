@@ -3,8 +3,8 @@
   import { expoOut } from "svelte/easing";
 
   import Wheel from "./lib/wheel/Wheel.svelte";
-  import ListSection from "./lib/wheel/ListSearch/ListSection.svelte";
-  import { currentList } from "./helpers/statusStore";
+  import ListSection from "./lib/wheel/ListSearch/SearchMainSection.svelte";
+  import { currentList, startedFetchingLevels } from "./helpers/statusStore";
   import SelectedSection from "./lib/wheel/SelectedList/SelectedSection.svelte";
 
   let rotation = new Tween(0, { duration: 3000, easing: expoOut });
@@ -22,7 +22,7 @@
   >
     <Wheel rotation={rotation.current} />
   </button>
-  {#if $currentList === null}
+  {#if $currentList === null || $startedFetchingLevels}
     <ListSection />
   {:else}
     <SelectedSection />
