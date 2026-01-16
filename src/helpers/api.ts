@@ -50,16 +50,15 @@ export interface List {
 
 const listEndpoint = "https://gd-wheel.vercel.app/api/list/"
 
-export async function fetchList(id: number | string, page: number = 0): Promise<List[] | -1> {
+export async function fetchList(id: number | string, page: number = 0): Promise<List[] | null> {
     try {
         const response = await fetch(`${listEndpoint}${id}?page=${page}&count=10`);
-        console.log(`${listEndpoint}${id}?page=${page}&count=10`);
         if (!response.ok) throw new Error(`Response Status: ${response.status}`);
 
-        const result: List[] | -1 = await response.json();
+        const result: List[] = await response.json();
         return result;
     } catch (error) {
         console.error((error as Error).message);
-        return -1;
+        return null;
     }
 }

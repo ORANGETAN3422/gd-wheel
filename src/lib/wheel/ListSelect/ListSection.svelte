@@ -2,22 +2,38 @@
     import ListCard from "./ListCard.svelte";
     import { currentList } from "../../../helpers/statusStore";
     import { fetchList } from "../../../helpers/api";
+    import LeftArrow from "../../Svgs/LeftArrow.svelte";
+    import RightArrow from "../../Svgs/RightArrow.svelte";
 
     let listsLoading: boolean = false;
+    let hasLoadedPage = false;
     let listId: number;
-    let currentPage: number = 0;
+    let currentPage: number = 1;
 
     async function getLists() {
+        checkPageNumber();
         if (listId != null) {
             listsLoading = true;
-            let lists = await fetchList(listId, currentPage);
+            let lists: any = await fetchList(listId, currentPage - 1);
             if (lists) {
+                if (lists === -1) {
+                    currentList.set(null);
+                    listsLoading = false;
+                    return;
+                }
                 currentList.set(lists);
                 listsLoading = false;
+                hasLoadedPage = true;
+                return;
             }
         } else {
             console.log("no thing in the there");
+            return;
         }
+    }
+
+    function checkPageNumber() {
+        if (currentPage < 1) currentPage = 1;
     }
 </script>
 
@@ -52,6 +68,10 @@
             <p class="text-sm text-slate-400 text-center mt-4">
                 loading lists…
             </p>
+        {:else if !listsLoading && hasLoadedPage && $currentList === null}
+            <p class="text-sm text-slate-400 text-center mt-4">
+                No levels on page {currentPage}
+            </p>
         {:else}
             {#each $currentList as list}
                 <ListCard {list} />
@@ -60,70 +80,61 @@
     </div>
 
     <div class="mt-4 flex items-center justify-between w-80">
+        <!-- prev -->
         <button
             onclick={() => {
                 currentPage--;
+                getLists();
             }}
             aria-label="Previous page"
+            disabled={currentPage <= 1}
             class="px-3 py-1 rounded-md
-            h-8
-           bg-slate-700 text-slate-200
-           hover:bg-slate-600 transition-all
-           border border-slate-600
-           disabled:opacity-40
-           flex items-center justify-center"
+               h-8
+               bg-slate-700 text-slate-200
+               hover:bg-slate-600 transition-all
+               border border-slate-600
+               disabled:opacity-40
+               flex items-center justify-center"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 640 640"
-                class="w-4 h-4 fill-current"
-            >
-                <path
-                    d="M201.4 297.4C188.9 309.9 188.9 330.2 201.4 342.7L361.4 502.7C373.9 515.2 394.2 515.2 406.7 502.7C419.2 490.2 419.2 469.9 406.7 457.4L269.3 320L406.6 182.6C419.1 170.1 419.1 149.8 406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3L201.3 297.3z"
-                />
-            </svg>
+            <LeftArrow />
         </button>
 
+        <!-- page input -->
         <div
             class="h-8 ml-2 mr-2 rounded
-           flex items-center
-           flex-1
-           bg-slate-800/70
-           border border-slate-700
-           text-sm font-medium text-slate-300"
+               flex items-center
+               flex-1
+               bg-slate-800/70
+               border border-slate-700
+               text-sm font-medium text-slate-300"
         >
             <span class="pl-2 pr-1 text-slate-400 select-none"> Page </span>
 
             <input
                 type="number"
                 class="ml-[-20px] w-full h-full bg-transparent outline-none
-               text-slate-300 text-center px-1"
+                   text-slate-300 text-center px-1"
                 bind:value={currentPage}
             />
         </div>
 
+        <!-- next -->
         <button
             onclick={() => {
                 currentPage++;
+                getLists();
             }}
             aria-label="Next page"
+            disabled={$currentList === null && currentPage > 1}
             class="px-3 py-1 rounded-md
-            h-8
-           bg-slate-700 text-slate-200
-           hover:bg-slate-600 transition-all
-           border border-slate-600
-           disabled:opacity-40
-           flex items-center justify-center"
+               h-8
+               bg-slate-700 text-slate-200
+               hover:bg-slate-600 transition-all
+               border border-slate-600
+               disabled:opacity-40
+               flex items-center justify-center"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 640 640"
-                class="w-4 h-4 fill-current"
-            >
-                <path
-                    d="M439.1 297.4C451.6 309.9 451.6 330.2 439.1 342.7L279.1 502.7C266.6 515.2 246.3 515.2 233.8 502.7C221.3 490.2 221.3 469.9 233.8 457.4L371.2 320L233.9 182.6C221.4 170.1 221.4 149.8 233.9 137.3C246.4 124.8 266.7 124.8 279.2 137.3L439.2 297.3z"
-                />
-            </svg>
+            <RightArrow />
         </button>
     </div>
 </div>
