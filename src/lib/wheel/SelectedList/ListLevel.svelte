@@ -1,10 +1,7 @@
 <script lang="ts">
-    import type { List } from "../../../helpers/api";
-
-    export let list: List;
 </script>
 
-<div
+<button
     class="w-full px-3 py-2 mb-2
            rounded-md
            bg-slate-700/60
@@ -26,4 +23,4 @@
     <p class="text-xs text-slate-400 mt-0.5 text-left">
         by {list.author}
     </p>
-</div>
+</button>

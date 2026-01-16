@@ -49,14 +49,42 @@ export interface List {
 }
 
 const listEndpoint = "https://gd-wheel.vercel.app/api/list/"
+let levelsEndpoint = "https://aredl-roulette.vercel.app/api/gdbrowser/";
 
-export async function fetchList(id: number | string, page: number = 0): Promise<List[] | null> {
+export async function fetchLevel(id: number) {
+    try {
+        const response = await fetch(`${levelsEndpoint}${id}`);
+        if (!response.ok) {
+            throw new Error(`Response Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error((error as Error).message);
+    }
+}
+
+export async function fetchLists(id: number | string, page: number = 0): Promise<List[] | null> {
     try {
         const response = await fetch(`${listEndpoint}${id}?page=${page}&count=10`);
         if (!response.ok) throw new Error(`Response Status: ${response.status}`);
 
         const result: List[] = await response.json();
         return result;
+    } catch (error) {
+        console.error((error as Error).message);
+        return null;
+    }
+}
+
+export async function fetchList(id: number): Promise<List | null> {
+    try {
+        const response = await fetch(`${listEndpoint}${id}`);
+        if (!response.ok) throw new Error(`Response Status: ${response.status}`);
+
+        const result: List[] = await response.json();
+        return result[0];
     } catch (error) {
         console.error((error as Error).message);
         return null;

@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { fetchList } from "./helpers/api";
   import { Tween } from "svelte/motion";
   import { expoOut } from "svelte/easing";
 
   import Wheel from "./lib/wheel/Wheel.svelte";
-  import ListSection from "./lib/wheel/ListSelect/ListSection.svelte";
+  import ListSection from "./lib/wheel/ListSearch/ListSection.svelte";
+  import { currentList } from "./helpers/statusStore";
+  import SelectedSection from "./lib/wheel/SelectedList/SelectedSection.svelte";
 
   let rotation = new Tween(0, { duration: 3000, easing: expoOut });
 
   function spinWheel() {
-    console.log("Wheel clicked!");
+    console.log("wheel spin");
     rotation.target += 720;
   }
 </script>
@@ -21,5 +22,9 @@
   >
     <Wheel rotation={rotation.current} />
   </button>
-  <ListSection />
+  {#if $currentList === null}
+    <ListSection />
+  {:else}
+    <SelectedSection />
+  {/if}
 </div>

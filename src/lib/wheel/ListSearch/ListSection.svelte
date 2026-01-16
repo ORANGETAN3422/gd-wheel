@@ -1,7 +1,7 @@
 <script lang="ts">
     import ListCard from "./ListCard.svelte";
-    import { currentList } from "../../../helpers/statusStore";
-    import { fetchList } from "../../../helpers/api";
+    import { currentSearch } from "../../../helpers/statusStore";
+    import { fetchLists } from "../../../helpers/api";
     import LeftArrow from "../../Svgs/LeftArrow.svelte";
     import RightArrow from "../../Svgs/RightArrow.svelte";
 
@@ -14,14 +14,14 @@
         checkPageNumber();
         if (listId != null) {
             listsLoading = true;
-            let lists: any = await fetchList(listId, currentPage - 1);
+            let lists: any = await fetchLists(listId, currentPage - 1);
             if (lists) {
                 if (lists === -1) {
-                    currentList.set(null);
+                    currentSearch.set(null);
                     listsLoading = false;
                     return;
                 }
-                currentList.set(lists);
+                currentSearch.set(lists);
                 listsLoading = false;
                 hasLoadedPage = true;
                 return;
@@ -68,12 +68,12 @@
             <p class="text-sm text-slate-400 text-center mt-4">
                 loading lists…
             </p>
-        {:else if !listsLoading && hasLoadedPage && $currentList === null}
+        {:else if !listsLoading && hasLoadedPage && $currentSearch === null}
             <p class="text-sm text-slate-400 text-center mt-4">
                 No levels on page {currentPage}
             </p>
         {:else}
-            {#each $currentList as list}
+            {#each $currentSearch as list}
                 <ListCard {list} />
             {/each}
         {/if}
@@ -125,7 +125,7 @@
                 getLists();
             }}
             aria-label="Next page"
-            disabled={$currentList === null && currentPage > 1}
+            disabled={$currentSearch === null && currentPage > 1}
             class="px-3 py-1 rounded-md
                h-8
                bg-slate-700 text-slate-200
