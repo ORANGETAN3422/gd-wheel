@@ -2,10 +2,10 @@
   import { Tween } from "svelte/motion";
   import { expoOut } from "svelte/easing";
 
-  import Wheel from "./lib/Wheel/Wheel.svelte";
   import ListSection from "./lib/Search/ListSection.svelte";
   import { currentList } from "./helpers/statusStore";
-  import SelectedSection from "./lib//Selected/LevelSection.svelte";
+  import SelectedSection from "./lib/Selected/LevelSection.svelte";
+  import Wheel from "./lib/LevelWheel/Wheel.svelte";
 
   let rotation = new Tween(0, { duration: 3000, easing: expoOut });
 

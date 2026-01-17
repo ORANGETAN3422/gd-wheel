@@ -59,4 +59,4 @@
     }
 </script>
 
-<canvas bind:this={canvas} width={2 * r} height={2 * r} />
+<canvas bind:this={canvas} width={2 * r} height={2 * r}></canvas>
