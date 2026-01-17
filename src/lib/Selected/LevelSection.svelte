@@ -3,7 +3,7 @@
 
     import ListLevel from "./LevelCard.svelte";
     import { currentList, levelObjects } from "../../helpers/statusStore";
-    import type { List } from "../../helpers/api";
+    import { type List, searchList } from "../../helpers/api";
 
     let originalList: List;
 
@@ -17,8 +17,14 @@
         console.log($currentList);
     }
 
-    onMount(() => {
+    onMount(async () => {
         originalList = structuredClone($currentList)!;
+        let searchThing = await searchList(
+            $currentList.levelIDs,
+            parseInt($currentList.id),
+            100,
+        );
+        if (searchThing) levelObjects.set(searchThing);
         console.log(originalList);
     });
 </script>
@@ -36,8 +42,8 @@
     <div
         class="w-80 h-[500px] flex flex-col rounded-lg bg-slate-800/70 border border-slate-700 p-2 pb-0 overflow-y-auto shadow-inner"
     >
-        {#each $currentList?.levelIDs as level}
-            <ListLevel levelStr={level} />
+        {#each $levelObjects as level}
+            <ListLevel {level} />
         {/each}
     </div>
 

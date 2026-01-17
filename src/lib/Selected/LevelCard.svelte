@@ -1,24 +1,7 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { fetchLevel, type Level } from "../../helpers/api";
-    import { levelObjects } from "../../helpers/statusStore";
+    import { type Level } from "../../helpers/api";
 
-    export let levelStr: string;
-    let level: Level;
-
-    onMount(async () => {
-        const id = parseInt(levelStr);
-        if (!isNaN(id)) {
-            level = await fetchLevel(id);
-            levelObjects.update((current) => {
-                if (current === null) {
-                    return [level];
-                } else {
-                    return [...current, level];
-                }
-            });
-        }
-    });
+    export let level: Level;
 </script>
 
 <div class="flex gap-2 w-full mb-2 h-[70px]">
