@@ -1,10 +1,7 @@
 <script lang="ts">
-    import type { List } from "../../../helpers/api";
-    import { fetchList } from "../../../helpers/api";
-    import {
-        currentList,
-        startedFetchingLevels,
-    } from "../../../helpers/statusStore";
+    import type { List } from "../../helpers/api";
+    import { fetchList } from "../../helpers/api";
+    import { currentList } from "../../helpers/statusStore";
 
     export let list: List;
 
@@ -16,7 +13,6 @@
                 return;
             }
             currentList.set(l);
-            startedFetchingLevels.set(true);
             return;
         } else {
             console.log("no thing in the there 2");
@@ -33,7 +29,7 @@
            text-slate-100
            border border-slate-600
            transition-colors hover:bg-slate-600
-           "
+           relative"
 >
     <div class="flex items-center justify-between">
         <p class="text-base font-medium leading-tight truncate">

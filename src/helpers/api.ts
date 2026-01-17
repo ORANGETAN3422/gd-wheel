@@ -94,7 +94,27 @@ export interface Level {
 }
 
 const listEndpoint = "https://gd-wheel.vercel.app/api/list/"
-let levelsEndpoint = "https://gd-wheel.vercel.app/api/level/";
+const levelsEndpoint = "https://gd-wheel.vercel.app/api/level/";
+const searchEndpoint = "https://gd-wheel.vercel.app/api/search/";
+
+export async function searchList(ids: number[], listId: number, count: number = 100) {
+    try {
+        if (!ids.length) throw new Error("No level IDs provided");
+
+        const idsParam = ids.join(",");
+        const url = `${searchEndpoint}${idsParam}?list=${listId}&count=${count}`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error((error as Error).message);
+    }
+}
 
 export async function fetchLevel(id: number) {
     try {

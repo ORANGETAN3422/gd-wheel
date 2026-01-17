@@ -1,9 +1,9 @@
 <script lang="ts">
-    import ListCard from "./SearchCard.svelte";
-    import { currentSearch } from "../../../helpers/statusStore";
-    import { fetchLists } from "../../../helpers/api";
-    import LeftArrow from "../../Svgs/LeftArrow.svelte";
-    import RightArrow from "../../Svgs/RightArrow.svelte";
+    import ListCard from "./ListCard.svelte";
+    import { currentSearch } from "../../helpers/statusStore";
+    import { fetchLists } from "../../helpers/api";
+    import LeftArrow from "../Svgs/LeftArrow.svelte";
+    import RightArrow from "../Svgs/RightArrow.svelte";
 
     let listsLoading: boolean = false;
     let hasLoadedPage = false;
