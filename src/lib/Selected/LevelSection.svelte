@@ -3,29 +3,35 @@
 
     import ListLevel from "./LevelCard.svelte";
     import { currentList, levelObjects } from "../../helpers/statusStore";
-    import { type List, searchList } from "../../helpers/api";
+    import { type List, type Level, searchList } from "../../helpers/api";
 
     let originalList: List;
+    let originalObjects: Level[];
+    let loading = false;
 
     function returnToSearch() {
         currentList.set(null);
         levelObjects.set(null);
     }
 
-    function restoreList() {
+    async function restoreList() {
         currentList.set(originalList);
-        console.log($currentList);
+        levelObjects.set(originalObjects);
     }
 
     onMount(async () => {
+        originalObjects = structuredClone($levelObjects)!;
         originalList = structuredClone($currentList)!;
-        let searchThing = await searchList(
-            $currentList.levelIDs,
-            parseInt($currentList.id),
-            100,
-        );
-        if (searchThing) levelObjects.set(searchThing);
-        console.log(originalList);
+        if ($currentList) {
+            loading = true;
+            let searchThing = await searchList(
+                $currentList.levelIDs,
+                parseInt($currentList.id),
+                100,
+            );
+            if (searchThing) levelObjects.set(searchThing);
+            loading = false;
+        }
     });
 </script>
 
@@ -42,9 +48,24 @@
     <div
         class="w-80 h-[500px] flex flex-col rounded-lg bg-slate-800/70 border border-slate-700 p-2 pb-0 overflow-y-auto shadow-inner"
     >
-        {#each $levelObjects as level}
-            <ListLevel {level} />
-        {/each}
+        {#if !loading}
+            {#each $levelObjects as level}
+                <ListLevel {level} />
+            {/each}
+        {:else}
+            <div
+                class="flex flex-col justify-between
+               px-3 py-2
+               w-[100%]
+               rounded-md
+               bg-slate-700/60
+               text-slate-100
+               border border-slate-600
+               text-center"
+            >
+                <p>Loading...</p>
+            </div>
+        {/if}
     </div>
 
     <div class="mb-4 flex gap-x-2 text-sm">

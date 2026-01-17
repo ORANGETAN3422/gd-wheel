@@ -1,27 +1,28 @@
 <script lang="ts">
-  import { Tween } from "svelte/motion";
-  import { expoOut } from "svelte/easing";
-
-  import ListSection from "./lib/Search/ListSection.svelte";
+  import type { Level } from "./helpers/api";
   import { currentList } from "./helpers/statusStore";
+  import { calculateWheelRotation, chooseLevel } from "./helpers/spinning";
+  import { rotation } from "./helpers/spinning";
+  import ListSection from "./lib/Search/ListSection.svelte";
   import SelectedSection from "./lib/Selected/LevelSection.svelte";
   import Wheel from "./lib/LevelWheel/Wheel.svelte";
 
-  let rotation = new Tween(0, { duration: 3000, easing: expoOut });
-
   function spinWheel() {
-    console.log("wheel spin");
-    rotation.target += 720;
+    const level: Level = chooseLevel()!;
+    rotation.target += calculateWheelRotation(level);
   }
 </script>
 
 <div class="flex flex-row items-start">
-  <button
-    on:click={spinWheel}
-    class="w-[600px] h-[600px] flex-none rounded-full p-0 bg-none cursor-pointer flex items-center justify-center"
-  >
-    <Wheel rotation={rotation.current} />
-  </button>
+  <div class="relative w-[600px] h-[600px] flex-none">
+    <button
+      on:click={spinWheel}
+      class="w-full h-full rounded-full p-0 bg-none cursor-pointer flex items-center justify-center"
+    >
+      <Wheel rotation={rotation.current} />
+    </button>
+  </div>
+
   {#if $currentList === null}
     <ListSection />
   {:else}

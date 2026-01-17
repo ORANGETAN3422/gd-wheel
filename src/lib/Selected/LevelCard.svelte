@@ -1,7 +1,14 @@
 <script lang="ts">
     import { type Level } from "../../helpers/api";
+    import { levelObjects } from "../../helpers/statusStore";
 
     export let level: Level;
+
+    function removeLevel() {
+        levelObjects.update((current) =>
+            current!.filter((l) => l.id !== level.id),
+        );
+    }
 </script>
 
 <div class="flex gap-2 w-full mb-2 h-[70px]">
@@ -33,9 +40,9 @@
     </div>
 
     <!-- side button -->
-
     <button
         class="flex-1 w-[15%] rounded-md bg-red-700/60 text-slate-100 border border-red-600 hover:bg-red-600 flex items-center justify-center"
+        onclick={removeLevel}
     >
         X
     </button>
