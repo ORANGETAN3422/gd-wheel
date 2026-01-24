@@ -50,6 +50,7 @@
                 placeholder="List ID or Name"
                 maxlength="25"
                 bind:value={listId}
+                onkeydown={(e) => e.key === "Enter" && getLists()}
                 class="p-2 rounded flex-1 bg-slate-800/70 border border-slate-700"
             />
             <button

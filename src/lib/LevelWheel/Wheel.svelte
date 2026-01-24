@@ -31,7 +31,7 @@
         const levels = $levelObjects;
         const segmentAngle = (2 * Math.PI) / levels.length;
 
-        // Reset cache if number of levels changed
+        // reset cache if number of levels changed
         if (!cached || levels.length !== lastLevelCount) {
             cached = false;
         }
@@ -57,14 +57,34 @@
                 // text drawing
                 offCtx.save();
                 offCtx.translate(centerX, centerY);
+
                 const angle = startAngle + segmentAngle / 2;
                 offCtx.rotate(angle);
+
                 offCtx.textAlign = "right";
+                offCtx.textBaseline = "middle";
+
+                const arcWidth = r * segmentAngle;
+                const baseFontSize = 18;
+                const minFontSize = 12;
+
+                let fontSize = baseFontSize;
+                offCtx.font = `${fontSize}px system-ui`;
+
+                const text = segment.name;
+                const measured = offCtx.measureText(text);
+
+                if (measured.width > arcWidth * 1.1) {
+                    const scale = Math.pow(arcWidth / measured.width, 0.6);
+                    fontSize = Math.max(minFontSize, baseFontSize * scale);
+                    offCtx.font = `${fontSize}px system-ui`;
+                }
+
                 offCtx.fillStyle = isLight(colors[index % colors.length])
                     ? "#000"
                     : "#fff";
-                offCtx.font = "16px system-ui";
-                offCtx.fillText(segment.name, r - 10, 5);
+
+                offCtx.fillText(text, r - 8, 0);
                 offCtx.restore();
             });
 

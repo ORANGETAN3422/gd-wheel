@@ -20,16 +20,21 @@
     }
 
     onMount(async () => {
-        originalObjects = structuredClone($levelObjects)!;
-        originalList = structuredClone($currentList)!;
         if ($currentList) {
             loading = true;
-            let searchThing = await searchList(
+
+            const searchThing = await searchList(
                 $currentList.levelIDs,
                 parseInt($currentList.id),
                 100,
             );
-            if (searchThing) levelObjects.set(searchThing);
+
+            if (searchThing) {
+                levelObjects.set(searchThing);
+                originalObjects = structuredClone(searchThing);
+                originalList = structuredClone($currentList);
+            }
+
             loading = false;
         }
     });
